@@ -1,0 +1,36 @@
+---
+title: "Sarasota Hourly Weather"
+format: html
+execute:
+  echo: false
+  message: false
+  warning: false
+---
+
+```{r}
+#| label: setup
+library(tidyverse)
+
+weather <- read_rds("sarasota_weather.rds")
+```
+
+```{r}
+#| label: temperature-plot
+weather |>
+  ggplot(aes(x = time, y = temperature_2m)) +
+  geom_line(color = "coral2", linewidth = 1) +
+  geom_point(color = "coral4", size = 1, alpha = 0.6) +
+  scale_x_datetime(date_breaks = "1 day", date_labels = "%b %d") +
+  labs(
+    title = "Hourly Temperature in Sarasota, Florida",
+    subtitle = "Past 7 days of hourly observations",
+    x = "Date",
+    y = "Temperature (°C)",
+    caption = "Source: Open-Meteo API"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+```
